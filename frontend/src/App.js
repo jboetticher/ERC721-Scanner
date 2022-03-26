@@ -1,34 +1,83 @@
 import {
   Grid,
   Card,
-  CardContent
+  CardContent,
+  CardActions,
+  Button,
+  CircularProgress,
+  Link
 } from "@mui/material";
 import "./background.css";
+import { useState } from "react";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { purple } from '@mui/material/colors';
 
 function App() {
 
-  const addresses =
-    ["0xD78B6EF907Fd09aBE22011C31267D47ec59f1c45",
-      "0x4E060bf069d468f48a7BbB165e4DFf6CA88f6464",
-      "0xfa8c726f34244c03E2eb3D67805Dc92B13a699d1"];
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: purple[300],
+      }
+    }
+  });
+
+  const [addresses, setAddresses] = useState(null);
+  if (addresses == null) {
+    setAddresses(-1);
+    fetch("http://localhost:3001/geterc721")
+      .then(res => res.json())
+      .then(res => {
+        setAddresses(res);
+      });
+  }
+  const addressesFound = addresses !== null && addresses !== -1;
 
   return (
     <div className="App">
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <h1>RECENT ERC721 CONTRACTS DEPLOYED ON ROPSTEN</h1>
-        </Grid>
-        {addresses.map((address, i) => (
-          <Grid item md={4} sm={6} xs={12} key={i}>
-            <Card>
-              <CardContent>
-                <h5>{address}</h5>
-              </CardContent>
-            </Card>
+      <ThemeProvider theme={theme} >
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <h1>RECENT ERC721 CONTRACTS DEPLOYED ON ROPSTEN</h1>
           </Grid>
-        ))}
-      </Grid>
+          {addressesFound ?
+            addresses.map((address, i) => (
+              <ERC721Card address={address} key={i} />
+            )) :
+            <Grid item xs={12}>
+              <CircularProgress />
+            </Grid>}
+          <Grid item xs={12}>
+            {addressesFound ?
+              <Button variant="contained" onClick={() => { setAddresses(null) }}>
+                Refresh
+              </Button> : <></>
+            }
+          </Grid>
+        </Grid>
+      </ThemeProvider>
     </div>
+  );
+}
+
+let ERC721Card = ({ address }) => {
+
+  return (
+    <Grid item md={4} sm={6} xs={12}>
+      <Card>
+        <CardContent>
+          <h5>{address}</h5>
+        </CardContent>
+        <CardActions>
+          <Button>
+            <Link underline="none" target="_blank"
+              href={`https://ropsten.etherscan.io/address/${address}`}>
+              Look on Etherscan
+            </Link>
+          </Button>
+        </CardActions>
+      </Card>
+    </Grid>
   );
 }
 

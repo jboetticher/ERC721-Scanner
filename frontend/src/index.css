@@ -23,3 +23,7 @@ code {
 .MuiCard-root {
   box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.4) !important;
 }
+
+h5 {
+  word-break: break-all;
+}
