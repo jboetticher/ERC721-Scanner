@@ -1,0 +1,11 @@
+{
+  "name": "atomic-search-solution",
+  "version": "1.0.0",
+  "description": "Jeremy will figure it out",
+  "main": "index.js",
+  "scripts": {
+    "backend": "node ./backend/src.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
