@@ -13,7 +13,7 @@ const ERC165hash = "0x80ac58cd";
  *  Write a REST endpoint which returns an array of Ethereum addresses for all 
  *  ERC721-compliant contracts created within the last 15 minutes.
 */
-app.get('/', async (req, res) => {
+app.get('/geterc721', async (req, res) => {
 
   async function getTransactionsFromLast15Minutes() {
     const currentTime = Date.now() / 1000;
@@ -111,7 +111,8 @@ app.get('/', async (req, res) => {
   let createdContractReceipts = await getTransactionReceiptsFromContractCreation(allTransactions);
   let newERC721Addresses = await getAddressesOfERC721Contracts(createdContractReceipts);
 
-  res.json(newERC721Addresses);
+  res.set('Access-Control-Allow-Origin', '*');
+  res.status(200).json(newERC721Addresses);
 });
 
 /**
