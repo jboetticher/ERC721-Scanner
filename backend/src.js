@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
-const provider = "https://ropsten.infura.io/v3/566dd21dd3e14caaa28d4bd5db83bd8c";
+const provider = "https://goerli.infura.io/v3/8cbcb19cc1b5439e817ec01df53ece85";
 const web3Provider = new Web3.providers.HttpProvider(provider);
 const web3 = new Web3(web3Provider);
 const ERC165Interface = require("./erc165Interface.json");
